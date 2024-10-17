@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justcaliturner/simple-code-editor.git"
+    "url": "git+https://github.com/marcomiddeldorff/simple-code-editor.git"
   },
   "keywords": [
     "code-editor",
@@ -23,10 +23,9 @@
   "author": "Vic",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/justcaliturner/simple-code-editor/issues"
+    "url": "https://github.com/marcomiddeldorff/simple-code-editor.git/issues"
   },
-  "homepage": "https://simple-code-editor.vicuxd.com",
   "dependencies": {
-    "highlight.js": "^11.8.0"
+    "highlight.js": "^11.10.0"
   }
 }
