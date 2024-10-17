@@ -1,14 +1,10 @@
 <template>
-  <div
-    :theme="theme"
-    class="code-editor"
-    :class="{
-      'hide-header': !header,
-      scroll: scroll,
-      'read-only': readOnly,
-      wrap: wrap,
-    }"
-    :style="{
+  <div :theme="theme" class="code-editor" :class="{
+    'hide-header': !header,
+    scroll: scroll,
+    'read-only': readOnly,
+    wrap: wrap,
+  }" :style="{
       width: width,
       height: height,
       zIndex: zIndex,
@@ -16,22 +12,12 @@
       minWidth: minWidth,
       maxHeight: maxHeight,
       minHeight: minHeight,
-    }"
-  >
+    }">
     <div class="hljs" :style="{ borderRadius: borderRadius }">
-      <div
-        class="header"
-        :class="{ border: showLineNums }"
-        v-if="header"
-        :style="{ borderRadius: borderRadius + ' ' + borderRadius + ' 0 0' }"
-      >
-        <Dropdown
-          v-if="displayLanguage"
-          :width="langListWidth"
-          :title="languageTitle"
-          :disabled="languages.length <= 1"
-          :defaultDisplay="langListDisplay"
-        >
+      <div class="header" :class="{ border: showLineNums }" v-if="header"
+        :style="{ borderRadius: borderRadius + ' ' + borderRadius + ' 0 0' }">
+        <Dropdown v-if="displayLanguage" :width="langListWidth" :title="languageTitle" :disabled="languages.length <= 1"
+          :defaultDisplay="langListDisplay">
           <ul class="lang-list hljs" :style="{ height: langListHeight }">
             <li v-for="(lang, index) in languages" :key="index" @click="changeLang(lang)">
               {{ lang[1] ? lang[1] : lang[0] }}
@@ -40,50 +26,32 @@
         </Dropdown>
         <CopyCode @click="copy" v-if="copyCode"></CopyCode>
       </div>
-      <div
-        class="code-area"
-        :style="{ borderRadius: header ? '0 0 ' + borderRadius + ' ' + borderRadius : borderRadius }"
-      >
-        <div
-          v-if="showLineNums"
-          ref="lineNums"
-          class="line-nums hljs"
-          :style="{
-            fontSize: fontSize,
-            paddingTop: header ? '10px' : padding,
-            paddingBottom: padding,
-            top: top + 'px',
-          }"
-        >
+      <div class="code-area"
+        :style="{ borderRadius: header ? '0 0 ' + borderRadius + ' ' + borderRadius : borderRadius }">
+        <div v-if="showLineNums" ref="lineNums" class="line-nums hljs" :style="{
+          fontSize: fontSize,
+          paddingTop: header ? '10px' : padding,
+          paddingBottom: padding,
+          top: top + 'px',
+        }">
           <div>1</div>
           <div v-for="num in lineNum">{{ num + 1 }}</div>
           <div>&nbsp;</div>
         </div>
-        <textarea
-          title="textarea"
-          :readOnly="readOnly"
-          :style="{
-            fontSize: fontSize,
-            padding: !header ? padding : lineNums ? '10px ' + padding + ' ' + padding : '0 ' + padding + ' ' + padding,
-            marginLeft: showLineNums ? lineNumsWidth + 'px' : '0',
-            width: showLineNums ? 'calc(100% - ' + lineNumsWidth + 'px)' : '100%',
-          }"
-          ref="textarea"
-          :autofocus="autofocus"
-          spellcheck="false"
-          @keydown.tab.prevent.stop="tab"
-          @scroll="calcScrollDistance"
-          :value="modelValue == undefined ? content : modelValue"
-          @input="updateValue"
-        ></textarea>
-        <pre
-          :style="{
-            paddingRight: scrollBarWidth + 'px',
-            paddingBottom: scrollBarHeight + 'px',
-            marginLeft: showLineNums ? lineNumsWidth + 'px' : '0',
-            width: showLineNums ? 'calc(100% - ' + lineNumsWidth + 'px)' : '100%',
-          }"
-        >
+        <textarea title="textarea" :readOnly="readOnly" :style="{
+          fontSize: fontSize,
+          padding: !header ? padding : lineNums ? '10px ' + padding + ' ' + padding : '0 ' + padding + ' ' + padding,
+          marginLeft: showLineNums ? lineNumsWidth + 'px' : '0',
+          width: showLineNums ? 'calc(100% - ' + lineNumsWidth + 'px)' : '100%',
+        }" ref="textarea" :autofocus="autofocus" spellcheck="false" @keydown.tab.prevent.stop="tab"
+          @scroll="calcScrollDistance" :value="modelValue == undefined ? content : modelValue"
+          @input="updateValue"></textarea>
+        <pre :style="{
+          paddingRight: scrollBarWidth + 'px',
+          paddingBottom: scrollBarHeight + 'px',
+          marginLeft: showLineNums ? lineNumsWidth + 'px' : '0',
+          width: showLineNums ? 'calc(100% - ' + lineNumsWidth + 'px)' : '100%',
+        }">
         <code
           ref="code"
           v-highlight="contentValue"
@@ -346,6 +314,9 @@ export default {
     this.resizer();
   },
   updated() {
+    if (this.language) {
+      this.changeLang(this.language);
+    }
     if (this.insertTab) {
       this.$refs.textarea.setSelectionRange(this.cursorPosition, this.cursorPosition);
       this.insertTab = false;
@@ -367,10 +338,12 @@ export default {
   letter-spacing: 0 !important;
   line-height: 0 !important;
 }
-.code-editor > div {
+
+.code-editor>div {
   width: 100%;
   height: 100%;
 }
+
 /* header */
 .code-editor .header {
   box-sizing: border-box;
@@ -378,16 +351,19 @@ export default {
   z-index: 1;
   height: 34px;
 }
-.code-editor .header > .dropdown {
+
+.code-editor .header>.dropdown {
   position: absolute;
   top: 12px;
   left: 18px;
 }
-.code-editor .header > .copy-code {
+
+.code-editor .header>.copy-code {
   position: absolute;
   top: 10px;
   right: 12px;
 }
+
 /* code-area */
 .code-editor .code-area {
   position: relative;
@@ -395,18 +371,21 @@ export default {
   text-align: left;
   overflow: hidden;
 }
+
 /* font style */
-.code-editor .code-area > textarea,
-.code-editor .code-area > pre > code,
-.code-editor .line-nums > div {
+.code-editor .code-area>textarea,
+.code-editor .code-area>pre>code,
+.code-editor .line-nums>div {
   font-family: Consolas, Monaco, monospace;
   line-height: 1.5;
 }
-.code-editor .code-area > textarea:hover,
-.code-editor .code-area > textarea:focus-visible {
+
+.code-editor .code-area>textarea:hover,
+.code-editor .code-area>textarea:focus-visible {
   outline: none;
 }
-.code-editor .code-area > textarea {
+
+.code-editor .code-area>textarea {
   position: absolute;
   z-index: 1;
   top: 0;
@@ -423,7 +402,8 @@ export default {
   background: none;
   resize: none;
 }
-.code-editor .code-area > pre {
+
+.code-editor .code-area>pre {
   box-sizing: border-box;
   position: relative;
   z-index: 0;
@@ -431,7 +411,8 @@ export default {
   font-size: 0;
   margin: 0;
 }
-.code-editor .code-area > pre > code {
+
+.code-editor .code-area>pre>code {
   background: none;
   display: block;
   position: relative;
@@ -440,28 +421,34 @@ export default {
   box-sizing: border-box;
   margin: 0;
 }
+
 /* wrap code */
-.code-editor.wrap .code-area > textarea,
-.code-editor.wrap .code-area > pre > code {
+.code-editor.wrap .code-area>textarea,
+.code-editor.wrap .code-area>pre>code {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
 /* hide-header */
 .code-editor.hide-header.scroll .code-area {
   height: 100%;
 }
+
 /* scroll */
 .code-editor.scroll .code-area {
   height: calc(100% - 34px);
 }
-.code-editor.scroll .code-area > textarea {
+
+.code-editor.scroll .code-area>textarea {
   overflow: auto;
 }
-.code-editor.scroll .code-area > pre {
+
+.code-editor.scroll .code-area>pre {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
+
 /* dropdown */
 .code-editor .list {
   -webkit-user-select: none;
@@ -469,7 +456,8 @@ export default {
   height: 100%;
   font-family: sans-serif;
 }
-.code-editor .list > .lang-list {
+
+.code-editor .list>.lang-list {
   border-radius: 5px;
   box-sizing: border-box;
   overflow: auto;
@@ -479,7 +467,8 @@ export default {
   list-style: none;
   text-align: left;
 }
-.code-editor .list > .lang-list > li {
+
+.code-editor .list>.lang-list>li {
   font-size: 13px;
   transition: background 0.16s ease, color 0.16s ease;
   box-sizing: border-box;
@@ -489,15 +478,19 @@ export default {
   text-overflow: ellipsis;
   line-height: 30px;
 }
-.code-editor .list > .lang-list > li:first-child {
+
+.code-editor .list>.lang-list>li:first-child {
   padding-top: 5px;
 }
-.code-editor .list > .lang-list > li:last-child {
+
+.code-editor .list>.lang-list>li:last-child {
   padding-bottom: 5px;
 }
-.code-editor .list > .lang-list > li:hover {
+
+.code-editor .list>.lang-list>li:hover {
   background: rgba(160, 160, 160, 0.4);
 }
+
 /* line-nums */
 .code-editor .line-nums {
   min-width: 36px;
@@ -509,6 +502,7 @@ export default {
   padding-left: 8px;
   opacity: 0.3;
 }
+
 .code-editor .line-nums::after {
   content: "";
   position: absolute;
@@ -519,6 +513,7 @@ export default {
   border-right: 1px solid currentColor;
   opacity: 0.5;
 }
+
 .code-editor .header.border::after {
   content: "";
   position: absolute;
