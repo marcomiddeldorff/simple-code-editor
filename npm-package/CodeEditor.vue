@@ -211,6 +211,10 @@ export default {
       type: String,
       default: "20px",
     },
+    language: {
+      type: String,
+      default: this.languages[0][0]
+    }
   },
   directives: {
     highlight: {
@@ -335,6 +339,7 @@ export default {
     },
   },
   mounted() {
+    this.changeLang(this.language);
     this.$emit("lang", this.languages[0][0]);
     this.$emit("content", this.content);
     this.$emit("textarea", this.$refs.textarea);
