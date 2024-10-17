@@ -359,6 +359,8 @@ export default {
 <style>
 .code-editor {
   position: relative;
+  letter-spacing: 0 !important;
+  line-height: 0 !important;
 }
 .code-editor > div {
   width: 100%;
